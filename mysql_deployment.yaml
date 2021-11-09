@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudsql-proxy
+spec:
+  selector:
+    matchLabels:
+      app: cloudsql-proxy
+  template:
+    metadata:
+      labels:
+        app: cloudsql-proxy
+        unit: mycloudsql
+    spec:
+      containers:
+      - name: hello-java3
+        image: gcr.io/antas-scrmtm/hello-java3:v1
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.17
+        command: ["/cloud_sql_proxy","-instances=antas-scrmtm:us-central1:my-instance1=tcp:0.0.0.0:3306","-credential_file=/secrets/coudsql/antas-scrmtm-b88a7302d503entials.json"]
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials
+        - name: cloudsql
+          emptyDir:

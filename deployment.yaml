@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connection-code
+  labels:
+    app: connection-code
+spec:
+  selector:
+    matchLabels:
+      app: connection-code
+  template:
+    metadata:
+      labels:
+          app: connection-code
+    spec:
+      # This section describes the containers that make up the deployment
+      containers:
+        - name: connection-code
+          image: gcr.io/antas-scrmtm/petclinic-app:v1
+          command: [ "sleep" ]
+          args: [ "infinity" ]
+          env:
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: cloudsql-db-credentials
+                key: username
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: cloudsql-db-credentials
+                key: password
+
+
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.23.0
+          command: ["/cloud_sql_proxy",
+                    "-instances=antas-scrmtm:us-central1:my-instance1=tcp:0.0.0.0:3306",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials
+        - name: cloudsql
+          emptyDir:
