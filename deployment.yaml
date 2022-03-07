@@ -16,7 +16,7 @@ spec:
       # This section describes the containers that make up the deployment
       containers:
         - name: connection-code
-          image: gcr.io/antas-scrmtm/petclinic-app:v1
+          image: gcr.io/petclinic-vfuntion/petclinic-app:v1
           command: [ "sleep" ]
           args: [ "infinity" ]
           env:
