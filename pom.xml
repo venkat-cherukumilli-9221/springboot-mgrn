@@ -6,6 +6,7 @@
   <groupId>org.springframework.samples</groupId>
   <artifactId>spring-petclinic</artifactId>
   <version>2.5.0-SNAPSHOT</version>
+  <packaging>war</packaging>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -56,8 +57,12 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+      <scope>provided</scope>
+    </dependency>
 
-   
    <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
 <dependency>
     <groupId>javax.xml.bind</groupId>
@@ -107,7 +112,7 @@
                 <groupId>nz.net.ultraq.thymeleaf</groupId>
                 <artifactId>thymeleaf-layout-dialect</artifactId>
             </exclusion>
-            
+
         </exclusions>
     </dependency>
     <dependency>
@@ -190,10 +195,11 @@
       <version>2.3.0</version>
     </dependency>
 
-	
+
   </dependencies>
 
   <build>
+    <finalName>petclinic</finalName>
     <plugins>
       <plugin>
         <groupId>io.spring.javaformat</groupId>
@@ -343,9 +349,9 @@
             <version>${mockito.version}</version>
           </dependency>
 
-	
-	
-        </dependencies> 
+
+
+        </dependencies>
       </plugin>
 
 
@@ -358,7 +364,7 @@
           <deploy.promote>true</deploy.promote>
           <deploy.stopPreviousVersion>true</deploy.stopPreviousVersion>
         </configuration>
-        </plugin>	
+        </plugin>
 
     </plugins>
   </build>
